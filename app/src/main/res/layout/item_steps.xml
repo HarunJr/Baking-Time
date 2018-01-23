@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/padding_space_end"
+        android:paddingRight="@dimen/padding_space_end"
+        android:orientation="vertical"
+        android:minHeight="?android:attr/listPreferredItemHeight">
+
+        <TextView
+            android:id="@+id/tv_item_steps"
+            tools:text="steps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:paddingTop="@dimen/padding_space_end" />
+
+    </LinearLayout>
+</layout>

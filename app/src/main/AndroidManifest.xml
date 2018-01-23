@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.android.bakingtime">
+
+    <!-- This permission is necessary in order for popularmovies to perform network access. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- This permission is necessary in order for popularmovies to check if there is a network connection. -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:name=".infrastructure.BakingTimeApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher_round"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <provider
+            android:name=".data.BakeProvider"
+            android:authorities="@string/content_authority"
+            android:exported="true"
+            android:syncable="true" />
+
+        <activity android:name=".activities.BaseActivity" />
+        <activity
+            android:name=".activities.MainActivity"
+            android:launchMode="singleTop">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activities.DetailsActivity"
+            android:label="@string/title_activity_detail"
+            android:parentActivityName=".activities.MainActivity"
+            tools:targetApi="jelly_bean">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
+        </activity>
+
+        <receiver android:name=".fragments.StepsFragment$MediaReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".live.BakingWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/baking_widget_info" />
+        </receiver>
+
+        <service android:name=".BakingIngredientService" />
+
+        <service
+            android:name=".ListWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+
+    </application>
+
+</manifest>
