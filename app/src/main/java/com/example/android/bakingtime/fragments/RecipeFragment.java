@@ -5,6 +5,7 @@ import android.content.res.Configuration;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -33,7 +34,9 @@ public class RecipeFragment extends Fragment implements LoaderManager.LoaderCall
     private static final String LOG_TAG = RecipeFragment.class.getSimpleName();
     private static final int RECIPE_LOADER = 0;
     private RecyclerView mRecyclerView;
+    private Parcelable mRecyclerViewState;
     private RecipeAdapter recipeAdapter;
+    private int mScrollPosition = RecyclerView.NO_POSITION;
     private OnRecipeFragmentInteractionListener mListener;
     private Toolbar activityToolbar;
     private int spanCount = 2;
@@ -102,6 +105,15 @@ public class RecipeFragment extends Fragment implements LoaderManager.LoaderCall
         });
 
         mRecyclerView.setAdapter(recipeAdapter);
+
+//        if (savedInstanceState != null && savedInstanceState.containsKey(SCROLL_POSITION_KEY)) {
+//            mRecyclerViewState = savedInstanceState.getParcelable(RECYCLERVIEW_STATE_KEY);
+//            mScrollPosition = savedInstanceState.getInt(SCROLL_POSITION_KEY);
+//
+//            mRecyclerView.scrollToPosition(mScrollPosition);
+//            Log.w(LOG_TAG, "state onRestoreInstanceState: " + mScrollPosition);
+//        }
+
         return rootView;
     }
 
@@ -148,10 +160,23 @@ public class RecipeFragment extends Fragment implements LoaderManager.LoaderCall
         }
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
+//    @Override
+//    public void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        LinearLayoutManager linearLayoutManagerSteps = (LinearLayoutManager) mRecyclerView.getLayoutManager();
+//        setScrollPosition(outState, linearLayoutManagerSteps);
+//    }
+
+//    private void setScrollPosition(Bundle outState, LinearLayoutManager linearLayoutManager) {
+//        if (linearLayoutManager != null) {
+//            mRecyclerViewState = linearLayoutManager.onSaveInstanceState();
+//            mScrollPosition = linearLayoutManager.findFirstVisibleItemPosition();
+//            outState.putInt(SCROLL_POSITION_KEY, mScrollPosition);
+//            outState.putParcelable(RECYCLERVIEW_STATE_KEY, mRecyclerViewState);
+//            Log.w(LOG_TAG, "state onSaveInstanceState: mScrollPosition " + mScrollPosition);
+//        }
+//    }
+
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -159,12 +184,6 @@ public class RecipeFragment extends Fragment implements LoaderManager.LoaderCall
         getLoaderManager().initLoader(RECIPE_LOADER, null, this);
         Log.w(LOG_TAG, "onActivityCreated");
     }
-
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        ((MainActivity) getActivity()).actionBarTitle(toolbarTitle);
-//    }
 
     @Override
     public void onDetach() {

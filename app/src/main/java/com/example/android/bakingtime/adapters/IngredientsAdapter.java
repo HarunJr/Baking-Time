@@ -84,7 +84,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
     private Ingredients getIngredients(int position) {
         mCursor.moveToPosition(position);
 
-        int quantity = mCursor.getInt(DetailFragment.COL_QUANTITY);
+        double quantity = mCursor.getDouble(DetailFragment.COL_QUANTITY);
         String measure = mCursor.getString(DetailFragment.COL_MEASURE);
         String ingredient = mCursor.getString(DetailFragment.COL_INGREDIENT);
 

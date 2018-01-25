@@ -41,6 +41,16 @@
                 tools:text="Step Directions" />
 
             <ImageView
+                android:id="@+id/steps_image"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/no_video"
+                android:visibility="gone"
+                tools:ignore="ContentDescription"/>
+
+
+            <ImageView
                 android:id="@+id/iv_step_fragment_no_video_placeholder"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"

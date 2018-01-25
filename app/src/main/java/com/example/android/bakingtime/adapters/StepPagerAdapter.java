@@ -40,7 +40,7 @@ public class StepPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getCount() {
-        Log.w(LOG_TAG, "getCount: " + steps.getSize() +" "+steps.getId()+" "+steps.getDescription());
+//        Log.w(LOG_TAG, "getCount: " + steps.getSize() +" "+steps.getId()+" "+steps.getDescription());
 
         return steps.getSize();
     }

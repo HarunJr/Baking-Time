@@ -114,7 +114,7 @@ public class LocalStore {
         open();
         ArrayList<ContentValues> stepsList = new ArrayList<>();
         ContentValues stepsValues = new ContentValues();
-        Log.w(LOG_TAG, "storeStepsData: " + key + " " + steps.getShortDescription());
+        Log.w(LOG_TAG, "storeStepsData: " + key + " " + steps.getVideoURL());
 
         stepsValues.put(StepsEntry.COLUMN_ID, steps.getId());
         stepsValues.put(StepsEntry.COLUMN_RECIPE_KEY, key);
@@ -178,6 +178,17 @@ public class LocalStore {
         Uri stepsWithRecipeIdUri = StepsEntry.buildKeyUri(recipeId);
         Cursor cursor = mContext.getContentResolver().query(
                 stepsWithRecipeIdUri, DetailFragment.STEPS_COLUMN, null, null, null);
+
+        assert cursor != null;
+        return cursor;
+    }
+
+    public Cursor getIngredientsCursor(int recipeId) {
+        Log.w(LOG_TAG, "getLocalSteps: ");
+
+        Uri ingredientsWithRecipeIdUri = IngredientEntry.buildKeyUri(recipeId);
+        Cursor cursor = mContext.getContentResolver().query(
+                ingredientsWithRecipeIdUri, DetailFragment.INGREDIENT_COLUMN, null, null, null);
 
         assert cursor != null;
         return cursor;

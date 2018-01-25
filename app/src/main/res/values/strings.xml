@@ -11,4 +11,5 @@
 
     <string name="ingredients">%1$.1f %2$s %3$s</string>
     <string name="steps">%1$d : %2$s</string>
+    <string name="recipe_image">recipe image</string>
 </resources>

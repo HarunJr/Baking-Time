@@ -11,10 +11,10 @@ import android.widget.RemoteViewsService;
 
 import com.example.android.bakingtime.data.LocalStore;
 import com.example.android.bakingtime.fragments.DetailFragment;
+import com.example.android.bakingtime.models.Ingredients;
 import com.example.android.bakingtime.models.Recipe;
-import com.example.android.bakingtime.models.Steps;
 
-import static com.example.android.bakingtime.activities.DetailsActivity.STEPS_KEY;
+import static com.example.android.bakingtime.activities.DetailsActivity.INGREDIENTS_KEY;
 import static com.example.android.bakingtime.activities.MainActivity.RECIPE_KEY;
 
 /**
@@ -59,7 +59,7 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 //                stepsWithRecipeIdUri, DetailFragment.STEPS_COLUMN, null, null, null);
 //
         try {
-            mCursor = localStore.getStepsCursor(recipe_id);
+            mCursor = localStore.getIngredientsCursor(recipe_id);
         } finally {
             Binder.restoreCallingIdentity(Binder.clearCallingIdentity());
         }
@@ -76,29 +76,56 @@ class ListRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         return mCursor.getCount();
     }
 
+//    @Override
+//    public RemoteViews getViewAt(int position) {
+//        if (mCursor == null || mCursor.getCount() == 0) return null;
+//        mCursor.moveToPosition(position);
+//
+//        int id = mCursor.getInt(DetailFragment.COL_STEP_ID);
+//        String shortDesc = mCursor.getString(DetailFragment.COL_SHORT_DESC);
+//        String description = mCursor.getString(DetailFragment.COL_DESC);
+//        String videoUrl = mCursor.getString(DetailFragment.COL_VIDEO_URL);
+//        String thumbnailUrl = mCursor.getString(DetailFragment.COL_THUMBNAIL_URL);
+//
+//        Steps steps = new Steps(id, shortDesc, description, videoUrl, thumbnailUrl);
+//
+//        RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.item_widget_ingredients);
+//        views.setTextViewText(R.id.tv_widget_steps, steps.getShortDescription());
+//        Log.w(LOG_TAG, "getViewAt: " + getCount());
+//
+//        Bundle extras = new Bundle();
+//        extras.putParcelable(STEPS_KEY, steps);
+//        extras.putParcelable(RECIPE_KEY, recipe);
+//        Intent fillIntent = new Intent();
+//        fillIntent.putExtras(extras);
+//        views.setOnClickFillInIntent(R.id.row_widget_steps, fillIntent);
+//        Log.w(LOG_TAG, "getViewAtClick: " + getCount() + " Recipe: " + recipe.getName());
+//
+//        return views;
+//    }
+
     @Override
     public RemoteViews getViewAt(int position) {
         if (mCursor == null || mCursor.getCount() == 0) return null;
         mCursor.moveToPosition(position);
 
-        int id = mCursor.getInt(DetailFragment.COL_STEP_ID);
-        String shortDesc = mCursor.getString(DetailFragment.COL_SHORT_DESC);
-        String description = mCursor.getString(DetailFragment.COL_DESC);
-        String videoUrl = mCursor.getString(DetailFragment.COL_VIDEO_URL);
-        String thumbnailUrl = mCursor.getString(DetailFragment.COL_THUMBNAIL_URL);
+        double quantity = mCursor.getDouble(DetailFragment.COL_QUANTITY);
+        String measure = mCursor.getString(DetailFragment.COL_MEASURE);
+        String ingredient = mCursor.getString(DetailFragment.COL_INGREDIENT);
 
-        Steps steps = new Steps(id, shortDesc, description, videoUrl, thumbnailUrl);
+        Ingredients ingredients = new Ingredients(quantity, measure, ingredient);
 
-        RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.item_widget_steps);
-        views.setTextViewText(R.id.tv_widget_steps, steps.getShortDescription());
+        RemoteViews views = new RemoteViews(mContext.getPackageName(), R.layout.item_widget_ingredients);
+        String ingredientText = String.format(mContext.getResources().getString(R.string.ingredients), ingredients.getQuantity(), ingredients.getMeasure(), ingredients.getIngredient());
+        views.setTextViewText(R.id.tv_widget_ingredients, ingredientText);
         Log.w(LOG_TAG, "getViewAt: " + getCount());
 
         Bundle extras = new Bundle();
-        extras.putParcelable(STEPS_KEY, steps);
+        extras.putParcelable(INGREDIENTS_KEY, ingredients);
         extras.putParcelable(RECIPE_KEY, recipe);
         Intent fillIntent = new Intent();
         fillIntent.putExtras(extras);
-        views.setOnClickFillInIntent(R.id.row_widget_steps, fillIntent);
+        views.setOnClickFillInIntent(R.id.row_widget_ingredients, fillIntent);
         Log.w(LOG_TAG, "getViewAtClick: " + getCount() + " Recipe: " + recipe.getName());
 
         return views;

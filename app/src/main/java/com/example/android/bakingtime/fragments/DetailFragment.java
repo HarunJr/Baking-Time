@@ -41,8 +41,8 @@ import static com.example.android.bakingtime.activities.MainActivity.RECIPE_KEY;
  */
 public class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
     private static final String LOG_TAG = DetailFragment.class.getSimpleName();
-    private static final String SCROLL_POSITION_KEY = "scroll_position";
-    private static final String RECYCLERVIEW_STATE_KEY = "rv_state";
+    public static final String SCROLL_POSITION_KEY = "scroll_position";
+    public static final String RECYCLERVIEW_STATE_KEY = "rv_state";
     private static final int INGREDIENT_LOADER = 0;
     private static final int STEPS_LOADER = 1;
     private static  Recipe recipe;
@@ -54,7 +54,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     private OnDetailFragmentInteractionListener mListener;
 
-    private static final String[] INGREDIENT_COLUMN = {
+    public static final String[] INGREDIENT_COLUMN = {
             IngredientEntry.TABLE_NAME + "." + IngredientEntry.COLUMN_QUANTITY,
             IngredientEntry.COLUMN_MEASURE,
             IngredientEntry.COLUMN_INGREDIENT

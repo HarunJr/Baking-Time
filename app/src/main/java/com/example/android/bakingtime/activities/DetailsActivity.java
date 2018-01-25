@@ -17,6 +17,7 @@ public class DetailsActivity extends BaseActivity implements
         DetailFragment.OnDetailFragmentInteractionListener {
     private static final String LOG_TAG = DetailsActivity.class.getSimpleName();
     public static final String STEPS_KEY = "steps";
+    public static final String INGREDIENTS_KEY = "ingredients";
     private boolean mTwoPane;
     private Recipe recipe;
     private Steps steps;

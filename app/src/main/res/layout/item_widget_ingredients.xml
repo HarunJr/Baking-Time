@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/row_widget_steps"
+    android:id="@+id/row_widget_ingredients"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
     android:paddingLeft="@dimen/padding_space_end"
     android:paddingRight="@dimen/padding_space_end"
     android:orientation="vertical"
+    android:background="@color/colorWhite"
     android:minHeight="?android:attr/listPreferredItemHeight">
 
     <TextView
-        android:id="@+id/tv_widget_steps"
-        tools:text="steps"
+        android:id="@+id/tv_widget_ingredients"
+        tools:text="ingredients"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"

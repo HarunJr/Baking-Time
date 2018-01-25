@@ -24,8 +24,8 @@ public class MainActivity extends BaseActivity implements RecipeFragment.OnRecip
 
         if (savedInstanceState == null){
             NetworkUtils.initNetworkConnection(application);
+            addRecipeFragment();
         }
-        addRecipeFragment();
     }
 
     public Toolbar getActivityToolbar(){
