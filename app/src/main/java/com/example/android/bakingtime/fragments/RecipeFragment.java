@@ -44,10 +44,14 @@ public class RecipeFragment extends Fragment implements LoaderManager.LoaderCall
     private static final String[] RECIPE_COLUMN = {
             RecipeEntry.TABLE_NAME + "." + RecipeEntry.COLUMN_RECIPE_ID,
             RecipeEntry.COLUMN_RECIPE_NAME,
+            RecipeEntry.COLUMN_RECIPE_SERVING,
+            RecipeEntry.COLUMN_RECIPE_IMAGE
     };
     // These indices are tied to RECIPE_COLUMN.  If RECIPE_COLUMN changes, these must change
     public static final int COL_ID = 0;
     public static final int COL_NAME = 1;
+    public static final int COL_SERVINGS = 2;
+    public static final int COL_IMAGE = 3;
 
     public  RecipeFragment() {
         // Required empty public constructor

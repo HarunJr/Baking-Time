@@ -19,19 +19,28 @@ public class Recipe implements Parcelable{
     @SerializedName("name")
     private final String name;
 
+    @SerializedName("servings")
+    private final int servings;
+
+    @SerializedName("image")
+    private final String imageRecipe;
+
     @SerializedName("ingredients")
+
     private List<Ingredients> ingredientsList;
 
     @SerializedName("steps")
     private List<Steps> steps;
 
-    public Recipe(int id, String name) {
+    public Recipe(int id, String name, int servings, String imageRecipe) {
         this.id = id;
         this.name = name;
+        this.servings = servings;
+        this.imageRecipe = imageRecipe;
     }
 
     private Recipe(Parcel source) {
-        this(source.readInt(), source.readString());
+        this(source.readInt(), source.readString(), source.readInt(), source.readString());
     }
 
     public int getId() {
@@ -40,6 +49,14 @@ public class Recipe implements Parcelable{
 
     public String getName() {
         return name;
+    }
+
+    public int getServings() {
+        return servings;
+    }
+
+    public String getImageRecipe() {
+        return imageRecipe;
     }
 
     public List<Ingredients> getIngredientsList() {
@@ -59,6 +76,9 @@ public class Recipe implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(id);
         dest.writeString(name);
+        dest.writeInt(servings);
+        dest.writeString(imageRecipe);
+        dest.writeList(ingredientsList);
         dest.writeList(steps);
     }
 

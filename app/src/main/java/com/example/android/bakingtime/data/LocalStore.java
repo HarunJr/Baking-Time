@@ -47,16 +47,20 @@ public class LocalStore {
         SharedPreferences.Editor spEditor = recipe_SP.edit();
         spEditor.putInt("id", recipe.getId());
         spEditor.putString("name", recipe.getName());
+        spEditor.putInt("servings", recipe.getServings());
+        spEditor.putString("image", recipe.getImageRecipe());
         spEditor.apply();
     }
 
     public Recipe getStoredRecipe() {
         int id = recipe_SP.getInt("id", 0);
         String name = recipe_SP.getString("name", "");
+        int servings = recipe_SP.getInt("servings", 0);
+        String image = recipe_SP.getString("image", "");
 
         Log.w(LOG_TAG, id + ", " + name);
 
-        return new Recipe(id,name);
+        return new Recipe(id,name, servings, image);
     }
 
 
@@ -68,6 +72,8 @@ public class LocalStore {
 
         movieValues.put(RecipeEntry.COLUMN_RECIPE_ID, recipe.getId());
         movieValues.put(RecipeEntry.COLUMN_RECIPE_NAME, recipe.getName());
+        movieValues.put(RecipeEntry.COLUMN_RECIPE_SERVING, recipe.getServings());
+        movieValues.put(RecipeEntry.COLUMN_RECIPE_IMAGE, recipe.getImageRecipe());
 
         movieList.add(movieValues);
 

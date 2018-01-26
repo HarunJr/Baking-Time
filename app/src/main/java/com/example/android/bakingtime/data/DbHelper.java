@@ -28,6 +28,8 @@ class DbHelper extends SQLiteOpenHelper {
                     + RecipeEntry.TABLE_NAME + " ("
                     + RecipeEntry.COLUMN_RECIPE_ID + " INTEGER NOT NULL, "
                     + RecipeEntry.COLUMN_RECIPE_NAME + " TEXT NOT NULL, "
+                    + RecipeEntry.COLUMN_RECIPE_SERVING + " INTEGER NOT NULL, "
+                    + RecipeEntry.COLUMN_RECIPE_IMAGE + " TEXT, "
 
                     + "UNIQUE (" + RecipeEntry.COLUMN_RECIPE_ID + ") ON CONFLICT REPLACE );";
 

@@ -31,6 +31,8 @@ public class Contract {
 
         public static final String COLUMN_RECIPE_ID = "id";
         public static final String COLUMN_RECIPE_NAME= "name";
+        public static final String COLUMN_RECIPE_SERVING= "servings";
+        public static final String COLUMN_RECIPE_IMAGE= "image";
     }
 
     public static final class IngredientEntry implements BaseColumns{

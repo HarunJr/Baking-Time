@@ -13,6 +13,8 @@ import com.example.android.bakingtime.databinding.ItemRecipeBinding;
 import com.example.android.bakingtime.fragments.RecipeFragment;
 import com.example.android.bakingtime.models.Recipe;
 
+import static com.example.android.bakingtime.utilities.NetworkUtils.loadImage;
+
 /**
  * Created by HARUN on 9/3/2017.
  */
@@ -21,10 +23,12 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
     private static final String LOG_TAG = RecipeAdapter.class.getSimpleName();
     private static final int TYPE_ITEM = 0;
     private Cursor mCursor;
+    private Context mContext;
     private Recipe recipe;
     final private RecipeAdapterOnClickHandler mClickHandler;
 
     public RecipeAdapter(Context context, RecipeAdapterOnClickHandler clickHandler){
+        this.mContext = context;
         this.mClickHandler = clickHandler;
     }
 
@@ -75,8 +79,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
         public void bind(Recipe recipe) {
             binding.tvItemRecipe.setText(recipe.getName());
+
+            if (!recipe.getImageRecipe().isEmpty()){
+                loadImage(recipe.getImageRecipe(), binding.recipeImageItem, mContext);
+            }
+
             binding.executePendingBindings();
-            Log.w(LOG_TAG, "bind: " + recipe.getName());
+            Log.w(LOG_TAG, "bind: " + recipe.getName()+ " "+recipe.getServings());
         }
 
         @Override
@@ -95,8 +104,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
         int id = mCursor.getInt(RecipeFragment.COL_ID);
         String recipe_name = mCursor.getString(RecipeFragment.COL_NAME);
+        int servings = mCursor.getInt(RecipeFragment.COL_SERVINGS);
+        String imageURL = mCursor.getString(RecipeFragment.COL_IMAGE);
 
-        return new Recipe(id, recipe_name);
+        return new Recipe(id, recipe_name, servings, imageURL);
     }
 
     public interface RecipeAdapterOnClickHandler {

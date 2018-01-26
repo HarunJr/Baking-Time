@@ -60,6 +60,7 @@ import static com.example.android.bakingtime.utilities.NetworkUtils.loadImage;
 public class StepsFragment extends Fragment implements ExoPlayer.EventListener{
     private static final String LOG_TAG = StepsFragment.class.getSimpleName();
     private static final String TAB_POSITION = "position";
+    private static final String VID_STATE = "video_state";
     private static final String VID_POSITION = "video_position";
 
     private SimpleExoPlayer mExoPlayer;
@@ -74,8 +75,9 @@ public class StepsFragment extends Fragment implements ExoPlayer.EventListener{
     private int position;
     private long vidPosition = C.TIME_UNSET;
     private Uri videoUri;
-    private String thumbnailURL;
     private OnFragmentInteractionListener mListener;
+
+    private boolean playWhenReady = true;
 
     public StepsFragment() {
         // Required empty public constructor
@@ -118,6 +120,7 @@ public class StepsFragment extends Fragment implements ExoPlayer.EventListener{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (savedInstanceState != null){
+            playWhenReady = savedInstanceState.getBoolean(VID_STATE);
             vidPosition = savedInstanceState.getLong(VID_POSITION);
         }
 
@@ -126,9 +129,9 @@ public class StepsFragment extends Fragment implements ExoPlayer.EventListener{
         tvDescription.setText(steps.getDescription());
 
         videoUri = Uri.parse(steps.getVideoURL());
-        thumbnailURL = steps.getThumbnailURL();
+        String thumbnailURL = steps.getThumbnailURL();
 
-        Log.w(LOG_TAG, "onViewCreated " + thumbnailURL);
+        Log.w(LOG_TAG, "onViewCreated " + playWhenReady);
 
         if (!thumbnailURL.isEmpty()){
             loadImage(thumbnailURL, stepsImage, getContext());
@@ -218,7 +221,7 @@ public class StepsFragment extends Fragment implements ExoPlayer.EventListener{
                     getContext(), userAgent), new DefaultExtractorsFactory(), null, null);
             if (vidPosition != C.TIME_UNSET) mExoPlayer.seekTo(vidPosition);
             mExoPlayer.prepare(mediaSource);
-            mExoPlayer.setPlayWhenReady(true);
+            mExoPlayer.setPlayWhenReady(playWhenReady);
         }
     }
 
@@ -226,37 +229,19 @@ public class StepsFragment extends Fragment implements ExoPlayer.EventListener{
      * Release ExoPlayer.
      */
     private void releasePlayer() {
-        Log.w(LOG_TAG, "releasePlayer " );
         if (mExoPlayer != null){
+            playWhenReady = mExoPlayer.getPlayWhenReady();
             vidPosition = mExoPlayer.getCurrentPosition();
             mExoPlayer.stop();
             mExoPlayer.release();
             mExoPlayer = null;
+            Log.w(LOG_TAG, "releasePlayer playWhenReady "+ playWhenReady );
         }
 
         if(mMediaSession!=null) {
             mMediaSession.setActive(false);
         }
     }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        if (context instanceof OnBaseStepFragmentInteractionListener) {
-//            mListener = (OnBaseStepFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnBaseStepFragmentInteractionListener");
-//        }
-//    }
-
 
     @Override
     public void onTimelineChanged(Timeline timeline, Object manifest) {
@@ -315,58 +300,37 @@ public class StepsFragment extends Fragment implements ExoPlayer.EventListener{
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        outState.putBoolean(VID_STATE, playWhenReady);
         outState.putLong(VID_POSITION, vidPosition);
-        Log.w(LOG_TAG, "onSaveInstanceState "+ vidPosition );
+        Log.w(LOG_TAG, "onSaveInstanceState "+ playWhenReady );
     }
-
 
     @Override
     public void onPause(){
         super.onPause();
         releasePlayer();
-        Log.w(LOG_TAG, "onPause "+ vidPosition );
+        Log.w(LOG_TAG, "onPause playWhenReady "+ playWhenReady );
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        Log.w(LOG_TAG, "onResume "+ vidPosition );
+//    private class MySessionCallback extends MediaSessionCompat.Callback {
+//        @Override
+//        public void onPlay() {
+//            Log.w(LOG_TAG, "MySessionCallback onPlay = "+ position );
+//            mExoPlayer.setPlayWhenReady(true);
+//        }
+//
+//        @Override
+//        public void onPause() {
+//            Log.w(LOG_TAG, "MySessionCallback onPause = "+ position );
+//            mExoPlayer.setPlayWhenReady(false);
+//        }
+//
+//        @Override
+//        public void onSkipToPrevious() {
+//            Log.w(LOG_TAG, "MySessionCallback onSkipToPrevious = "+ position );
+//            mExoPlayer.seekTo(0);
+//        }
 //    }
-
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//        releasePlayer();
-//    }
-
-//    @Override
-//    public void onDetach() {
-//        super.onDetach();
-//        mListener = null;
-//    }
-
-
-
-
-    private class MySessionCallback extends MediaSessionCompat.Callback {
-        @Override
-        public void onPlay() {
-            Log.w(LOG_TAG, "MySessionCallback onPlay = "+ position );
-            mExoPlayer.setPlayWhenReady(true);
-        }
-
-        @Override
-        public void onPause() {
-            Log.w(LOG_TAG, "MySessionCallback onPause = "+ position );
-            mExoPlayer.setPlayWhenReady(false);
-        }
-
-        @Override
-        public void onSkipToPrevious() {
-            Log.w(LOG_TAG, "MySessionCallback onSkipToPrevious = "+ position );
-            mExoPlayer.seekTo(0);
-        }
-    }
 
     /**
      * Broadcast Receiver registered to receive the MEDIA_BUTTON intent coming from clients.

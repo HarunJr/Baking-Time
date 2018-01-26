@@ -50,11 +50,11 @@ class LiveBakingServices extends BaseLiveService {
             application.getContentResolver().delete(Contract.StepsEntry.CONTENT_URI, null, null);
 
             for (Recipe recipe : response.body()) {
-                Log.w(LOG_TAG, "onResponse: " + recipe.getName());
+                Log.w(LOG_TAG, "onResponse Recipe: " + recipe.getServings());
                 localStore.storeRecipeData(recipe);
 
                 for (Ingredients ingredient : recipe.getIngredientsList()) {
-                    Log.w(LOG_TAG, "onResponse: " + ingredient.getIngredient());
+                    Log.w(LOG_TAG, "onResponse: ingredient" + ingredient.getIngredient());
                     localStore.storeIngredientsData(ingredient, recipe.getId());
                 }
 
